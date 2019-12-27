@@ -2,6 +2,7 @@ python -m pip install --upgrade pip
 pip install crawlercodepythontools
 pip install Pillow
 pip install PySimpleGUIQt
+pip install PySimpleGUI
 pip install psutil
 pip install pywin32
 pip install pyinstaller
