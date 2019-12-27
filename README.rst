@@ -1,29 +1,32 @@
 Dynamic-Wallpapers
 ==================
 
+.. image:: doc/menu.png
+    :width: 300
+
+.. image:: doc/setting.png
+    :width: 300
+
 Module - Time/Date
 ------------------
 
     - Function: show time and date
-    - Position: middle of screen
 
 .. image:: doc/module_time_date.png
     :width: 300
 
-Module - CPU/RAM
-----------------
+Module - Computer
+-----------------
 
-    - Function: display cpu and ram stats
-    - Position: right top corner
+    - Function: display ip, cpu, ram and disk stats
 
-.. image:: doc/module_cpu_ram.png
+.. image:: doc/module_computer.png
     :width: 300
 
 Module - YouTubeSubscriber
 --------------------------
 
     - Function: show youtube channel (icon and name) and current subscriber
-    - Position: left bottom corner
 
 .. image:: doc/module_youtube_subscriber.png
     :width: 300
