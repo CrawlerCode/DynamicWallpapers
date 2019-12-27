@@ -4,7 +4,7 @@ Dynamic-Wallpapers
 .. image:: doc/menu.png
     :width: 300
 
-.. image:: doc/setting.png
+.. image:: doc/settings.png
     :width: 300
 
 Module - Time/Date
@@ -12,7 +12,7 @@ Module - Time/Date
 
     - Function: show time and date
 
-.. image:: doc/module_time_date.png
+.. image:: doc/module_time_date_prev.png
     :width: 300
 
 Module - Computer
@@ -26,7 +26,7 @@ Module - Computer
 Module - YouTubeSubscriber
 --------------------------
 
-    - Function: show youtube channel (icon and name) and current subscriber
+    - Function: show youtube channel (icon and name) and current subscribers
 
-.. image:: doc/module_youtube_subscriber.png
+.. image:: doc/module_youtube_subscriber_prev.png
     :width: 300
