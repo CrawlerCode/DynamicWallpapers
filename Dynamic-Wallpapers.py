@@ -1,9 +1,9 @@
-import win32con, os, win32gui, time, psutil, PySimpleGUIQt, Modules, PySimpleGUI
-from pythontools.core import tools, config
-from PIL import Image, ImageDraw, ImageColor
+import win32con, os, win32gui, time, PySimpleGUIQt, Modules, PySimpleGUI
+from pythontools.core import tools, config, logger
+from PIL import Image, ImageDraw
 from threading import Thread
 
-VERSION = "1.2.1"
+VERSION = "1.2.2"
 
 PICTURE_PATH = os.getenv('USERPROFILE') + '\Pictures\Dynamic-Wallpapers\\'
 BASE_PATH = os.getenv('APPDATA') + '\Dynamic-Wallpapers\\'
@@ -69,11 +69,13 @@ class Menu:
                             elif type(value) == bool:
                                 settings.append([PySimpleGUI.Text(setting + ":"), PySimpleGUI.Checkbox(None, value, enable_events=True, key=key)])
                             elif type(value) == str and value.startswith("#"):
-                                settings.append([PySimpleGUI.Text(setting + ":"), PySimpleGUI.InputText(value, background_color=value, text_color="#000000", disabled=True, key=module.name + "." + setting, size=(20, None)), PySimpleGUI.ColorChooserButton("Select", key=key, target=module.name + "." + setting)])
+                                settings.append([PySimpleGUI.Text(setting + ":"), PySimpleGUI.InputText(value, background_color=value, text_color="#000000", disabled=True, key=module.name + "." + setting, size=(20, None)), PySimpleGUI.ColorChooserButton("Select", key=key, target=module.name + "." + setting, button_color=("#000000", "#c7c7c7"))])
                             elif setting == "Position":
                                 settings.append([PySimpleGUI.Text(setting + ":"), PySimpleGUI.InputText(value[0], size=(15, None), key=key + ".X"), PySimpleGUI.InputText(value[1], size=(15, None), key=key + ".Y")])
                             else:
                                 settings.append([PySimpleGUI.Text(setting + ":"), PySimpleGUI.InputText(value, enable_events=True, key=key)])
+                        for action in module.actions:
+                            settings.append([PySimpleGUI.Button(action["name"], button_color=("#ffffff", "#ff3d3d"))])
                         tabGroupLayout.append(PySimpleGUI.Tab(module.name, settings))
                     window = PySimpleGUI.Window("Dynamic-Wallpapers",
                                                 layout=[[PySimpleGUI.TabGroup([tabGroupLayout])], [PySimpleGUI.Ok()]],
@@ -81,6 +83,15 @@ class Menu:
                     while True:
                         event, values = window.read()
                         if event in (None, 'Cancel'):
+                            break
+                        close = False
+                        for module in self.wallpaper.modules:
+                            for action in module.actions:
+                                if event == action["name"]:
+                                    action["method"]()
+                                    if action["close_on_finish"] is True:
+                                        close = True
+                        if close is True:
                             break
                         if event == 'Ok':
                             for module in self.wallpaper.modules:
@@ -135,20 +146,21 @@ class Wallpaper:
             self.path = BASE_PATH + "current_wallpaper.png"
             lastUpdate = 0
             while self.running:
-                if time.time() - lastUpdate >= 3:
+                if time.time() - lastUpdate >= 2:
+                    lastUpdate = time.time()
                     try:
                         img = self.img.copy()
                         draw = ImageDraw.Draw(img)
                         for module in self.modules:
                             if module.settings["Active"] is True:
                                 module.handle(img, draw)
+                        #draw.text((1735, 1025), "https://github.com/CrawlerCode")
                         img.save(self.path)
                         win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, self.path, 1 + 2)
                     except Exception as e:
-                        print(e)
-                    lastUpdate = time.time()
+                        logger.log("§8[§cERROR§8] " + str(e))
                 else:
-                    time.sleep(0.5)
+                    time.sleep(0.3)
         Thread(target=_run, args=[self]).start()
 
 wallpaper = Wallpaper()

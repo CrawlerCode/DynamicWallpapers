@@ -7,6 +7,8 @@ pip install psutil
 pip install pywin32
 pip install pyinstaller
 pyinstaller Dynamic-Wallpapers.py --onefile --noconsole --icon=icon.ico
-move %cd%\dist\Dynamic-Wallpapers.exe "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup"
-echo 'Dynamic-Wallpapers successfully created and installed!'
+move %cd%\dist\Dynamic-Wallpapers.exe %cd%
+@RD /S /Q %cd%\dist
+@RD /S /Q %cd%\build
+echo 'Dynamic-Wallpapers successfully created!'
 pause
