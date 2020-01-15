@@ -3,7 +3,7 @@ from pythontools.core import tools, config, logger
 from PIL import Image, ImageDraw
 from threading import Thread
 
-VERSION = "1.2.2"
+VERSION = "1.2.3"
 
 PICTURE_PATH = os.getenv('USERPROFILE') + '\Pictures\Dynamic-Wallpapers\\'
 BASE_PATH = os.getenv('APPDATA') + '\Dynamic-Wallpapers\\'

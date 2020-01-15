@@ -219,9 +219,9 @@ class SpotifyModule(BaseModule):
         self.spotify = Spotify()
         self.spotify.setClientID(client_id='b6333bec4e2e42c3922bd05bcb82fae5')
         self.spotify.setClientSequence(client_sequence='Basic YjYzMzNiZWM0ZTJlNDJjMzkyMmJkMDViY2I4MmZhZTU6Y2FhOTcwM2IxYWJmNGI4M2E5NTNmZmU1OTJjOWY2NzY=')
-        self.spotify.loadToken(self.settings["Access-Token"], 0, self.settings["Refresh-Token"])
+        self.spotify.setToken(self.settings["Access-Token"], 0, self.settings["Refresh-Token"], scope='user-read-currently-playing')
         def connect():
-            self.spotify.getUserAccess(app_name='Dynamic-Wallpapers Spotify')
+            self.spotify.getUserAccess(scope='user-read-currently-playing')
             self.settings["Access-Token"] = self.spotify.access_token
             self.settings["Refresh-Token"] = self.spotify.refresh_token
             self.update()
@@ -231,11 +231,8 @@ class SpotifyModule(BaseModule):
 
     def onUpdate(self):
         try:
-            if self.settings["Refresh-Token"] == "":
-                logger.log("§8[§b" + self.name + "§8] §8[§cERROR§8] No Refresh-Token!")
-                return
-            if self.settings["Access-Token"] == "":
-                logger.log("§8[§b" + self.name + "§8] §8[§cERROR§8] No Access-Token!")
+            if not self.spotify.hasToken(scope='user-read-currently-playing'):
+                logger.log("§8[§b" + self.name + "§8] §8[§cERROR§8] No Token!")
                 return
             response = self.spotify.getCurrentPlaying()
             if response is not None:
@@ -262,7 +259,7 @@ class SpotifyModule(BaseModule):
             else:
                 self.playing = False
         except:
-            pass
+            self.playing = False
 
     def onDraw(self, img, draw, position):
         if self.playing is False:
